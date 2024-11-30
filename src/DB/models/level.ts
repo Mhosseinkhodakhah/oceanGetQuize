@@ -10,7 +10,7 @@ const levelSchema = new Schema<levelDB>({
     lesson : {type : mongoose.Types.ObjectId , ref : 'lessons'},
     passedUsers : [String],
     questions : [{type : mongoose.Types.ObjectId , ref : 'questions'}]
-})
+},{timestamps:true})
 
 
 const levelModel = model<levelDB>('levels' , levelSchema)

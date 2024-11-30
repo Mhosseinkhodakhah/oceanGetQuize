@@ -18,7 +18,7 @@ const subLessonSchema = new Schema<subLessonDB>({
         // name : {type:String},
         content:{type : mongoose.Types.ObjectId , ref : "contents"}
     }]
-})
+},{timestamps:true})
 
 
 const subLessonModel = model<subLessonDB>('subLessons' , subLessonSchema)

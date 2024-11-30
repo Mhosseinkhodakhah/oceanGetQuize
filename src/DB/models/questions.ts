@@ -15,7 +15,7 @@ const questionsSchema = new Schema<questionDB>({
     time : {type : Number},
     level : {type : mongoose.Types.ObjectId , ref : 'levels'},
     passedUser : [String]
-})
+},{timestamps:true})
 
 
 const questionModel = model<questionDB>('questions' , questionsSchema)

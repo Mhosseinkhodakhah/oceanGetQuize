@@ -35,6 +35,6 @@ const questionsSchema = new mongoose_1.Schema({
     time: { type: Number },
     level: { type: mongoose_1.default.Types.ObjectId, ref: 'levels' },
     passedUser: [String]
-});
+}, { timestamps: true });
 const questionModel = (0, mongoose_1.model)('questions', questionsSchema);
 exports.default = questionModel;

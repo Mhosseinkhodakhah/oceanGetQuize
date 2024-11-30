@@ -15,7 +15,7 @@ const lessonSchema = new Schema<lessonDB>({
     rewarded :{type : Boolean , default : false},
     levels : [{type : mongoose.Types.ObjectId , ref : 'levels'}],
     paasedQuize :[String],
-})
+},{timestamps:true})
 
 
 const lessonModel = model<lessonDB>('lessons' , lessonSchema)

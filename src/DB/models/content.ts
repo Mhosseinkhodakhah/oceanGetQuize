@@ -19,7 +19,7 @@ const contentSchema = new Schema<content>({
     
     subLesson : { type: mongoose.Types.ObjectId , ref: 'subLessons' }
 
-})
+},{timestamps:true})
 
 
 

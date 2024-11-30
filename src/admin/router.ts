@@ -10,5 +10,4 @@ const controller = new adminController()
 
 adminRouter.get('/get-levels' , adminAuth , controller.getLevels)
 
-
 export default adminRouter;

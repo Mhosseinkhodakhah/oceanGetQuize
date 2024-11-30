@@ -31,6 +31,6 @@ const levelSchema = new mongoose_1.Schema({
     lesson: { type: mongoose_1.default.Types.ObjectId, ref: 'lessons' },
     passedUsers: [String],
     questions: [{ type: mongoose_1.default.Types.ObjectId, ref: 'questions' }]
-});
+}, { timestamps: true });
 const levelModel = (0, mongoose_1.model)('levels', levelSchema);
 exports.default = levelModel;
