@@ -8,6 +8,6 @@ const controller = new interServiceController
 
 interservice.put('/put-content-photo/:contentId' , controller.putPhoto)
 
-interservice.patch('/reset-cache' , controller.resetCache )
+interservice.put('/reset-cache' , controller.resetCache )
 
 export default interservice;

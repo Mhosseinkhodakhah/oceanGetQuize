@@ -8,5 +8,5 @@ const controller_1 = __importDefault(require("./controller"));
 const interservice = (0, express_1.Router)();
 const controller = new controller_1.default;
 interservice.put('/put-content-photo/:contentId', controller.putPhoto);
-interservice.patch('/reset-cache', controller.resetCache);
+interservice.put('/reset-cache', controller.resetCache);
 exports.default = interservice;
