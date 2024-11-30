@@ -10,6 +10,6 @@ const router = Router()
 
 router.get('/get-levels' , auth , controller.getLevels)
 
-router.get('/open-level/:number' , auth , controller.openLevel)
+router.get('/open-level/:levelId' , auth , controller.openLevel)
 
 export default router;

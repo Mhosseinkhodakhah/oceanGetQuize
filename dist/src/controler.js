@@ -124,7 +124,7 @@ class contentController {
     openLevel(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             let userId = req.user.id;
-            const level = yield level_1.default.findOne({ number: req.params.number });
+            const level = yield level_1.default.findOne(req.params.levelId);
             if (level === null || level === void 0 ? void 0 : level.passedUsers.includes(userId)) {
                 const questiotns = yield questions_1.default.find({ level: level === null || level === void 0 ? void 0 : level._id }).limit(10);
                 return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: questiotns }));

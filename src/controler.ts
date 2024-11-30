@@ -132,9 +132,9 @@ export default class contentController {
 
     async openLevel(req: any, res: any, next: any) {
         let userId = req.user.id;
-        const level = await levelModel.findOne({ number: req.params.number })
+        const level = await levelModel.findOne(req.params.levelId)
         if (level?.passedUsers.includes(userId)) {
-            const questiotns = await questionModel.find({ level: level?._id }).limit(10)
+            const questiotns = await questionModel.find({ level : level?._id }).limit(10)
             return next(new response(req, res, 'open level', 200, null, { questions: questiotns }))
         }
         const questiotns = await questionModel.find({ $and: [{ level: level?._id }, { passedUser: { $ne: userId } }] }).limit(10)
