@@ -87,14 +87,17 @@ export default class contentService {
             const level = all[i].toObject()
             console.log(level.lesson.paasedQuize)
             let newData;
-            if (level.lesson.paasedQuize.includes(id)) {
-                newData = { ...level, mode: 2 }        // passed the quize
-
-            } else if (level.lesson.seen.includes(id)) {
-                newData = { ...level, mode: 1 }        // open but didnt passed the quize
-            } else {
-                newData = { ...level, mode: 0 }        // open but didnt passed the quize
+            let mode : number;
+            if (!level.lesson.seen.includes(id)){
+                mode = 0
+            }else if(level.passedUsers.includes(id)){
+                mode = 2
+            }else{
+                mode = 1
             }
+
+            newData = {...level , mode : mode}
+
             allLevels.push(newData)
         }
         return allLevels

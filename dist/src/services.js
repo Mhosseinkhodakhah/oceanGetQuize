@@ -92,15 +92,17 @@ class contentService {
                 const level = all[i].toObject();
                 console.log(level.lesson.paasedQuize);
                 let newData;
-                if (level.lesson.paasedQuize.includes(id)) {
-                    newData = Object.assign(Object.assign({}, level), { mode: 2 }); // passed the quize
+                let mode;
+                if (!level.lesson.seen.includes(id)) {
+                    mode = 0;
                 }
-                else if (level.lesson.seen.includes(id)) {
-                    newData = Object.assign(Object.assign({}, level), { mode: 1 }); // open but didnt passed the quize
+                else if (level.passedUsers.includes(id)) {
+                    mode = 2;
                 }
                 else {
-                    newData = Object.assign(Object.assign({}, level), { mode: 0 }); // open but didnt passed the quize
+                    mode = 1;
                 }
+                newData = Object.assign(Object.assign({}, level), { mode: mode });
                 allLevels.push(newData);
             }
             return allLevels;
