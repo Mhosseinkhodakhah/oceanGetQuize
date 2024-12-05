@@ -27,7 +27,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const levelSchema = new mongoose_1.Schema({
     number: { type: Number, unique: true },
     reward: { type: Number },
-    rewarded: { type: Boolean, default: false },
+    rewarded: [String],
     lesson: { type: mongoose_1.default.Types.ObjectId, ref: 'lessons' },
     passedUsers: [String],
     questions: [{ type: mongoose_1.default.Types.ObjectId, ref: 'questions' }]

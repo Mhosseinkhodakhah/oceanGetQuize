@@ -30,13 +30,13 @@ const subLessonSchema = new mongoose_1.Schema({
     aName: { type: String },
     number: { type: Number },
     lesson: { type: mongoose_1.default.Types.ObjectId, ref: 'lessons' },
-    content: { type: mongoose_1.default.Types.ObjectId, ref: 'contents' },
+    content: { type: mongoose_1.default.Types.ObjectId, ref: 'contents', default: null },
     seen: [String],
     subLessons: [{
             eName: { type: String },
+            aName: { type: String, default: '' },
+            name: { type: String, default: '' },
             number: { type: Number },
-            // aName : {type:String},
-            // name : {type:String},
             content: { type: mongoose_1.default.Types.ObjectId, ref: "contents" }
         }]
 }, { timestamps: true });

@@ -25,7 +25,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const contentSchema = new mongoose_1.Schema({
-    internalContent: {},
+    internalContent: {
+        title: { type: String, default: '' },
+        aTitle: { type: String, default: '' },
+        eTitle: { type: String, default: '' },
+        describtion: { type: String, default: '' },
+        eDescribtion: { type: String, default: '' },
+        aDescribtion: { type: String, default: '' },
+    },
     pictures: [String],
     ePictures: [String],
     aPictures: [String],

@@ -6,7 +6,7 @@ import { levelDB } from "../../interfaces";
 const levelSchema = new Schema<levelDB>({
     number : {type : Number , unique : true},
     reward : {type : Number},
-    rewarded : {type : Boolean , default:false},
+    rewarded : [String],
     lesson : {type : mongoose.Types.ObjectId , ref : 'lessons'},
     passedUsers : [String],
     questions : [{type : mongoose.Types.ObjectId , ref : 'questions'}]

@@ -32,7 +32,7 @@ const lessonSchema = new mongoose_1.Schema({
     sublessons: [{ type: mongoose_1.default.Types.ObjectId, ref: 'subLessons' }],
     reward: { type: Number, default: 100 },
     seen: [String],
-    rewarded: { type: Boolean, default: false },
+    rewarded: [String],
     levels: [{ type: mongoose_1.default.Types.ObjectId, ref: 'levels' }],
     paasedQuize: [String],
 }, { timestamps: true });
