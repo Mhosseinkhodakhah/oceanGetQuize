@@ -129,18 +129,19 @@ class contentController {
             // if (level?.passedUsers.includes(userId)) {
             // }
             const questiotns = yield questions_1.default.find({ level: level === null || level === void 0 ? void 0 : level._id }).limit(10);
+            let data = [];
             questiotns.forEach((elem) => {
                 let objectElem = elem.toObject();
+                let newquestion = {};
                 if (lang == 'english') {
-                    objectElem.questionForm = objectElem.eQuestionForm;
-                    objectElem.options = objectElem.eOptions;
+                    newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
                 }
                 if (lang == 'arabic') {
-                    objectElem.questionForm = objectElem.aQuestionForm;
-                    objectElem.options = objectElem.aOptions;
+                    newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
                 }
+                data.push(newquestion);
             });
-            return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: questiotns }));
+            return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: data }));
         });
     }
     //! needs to review

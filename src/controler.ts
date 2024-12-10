@@ -138,18 +138,19 @@ export default class contentController {
 
         // }
         const questiotns = await questionModel.find({ level: level?._id }).limit(10)
+        let data :{}[] = []
         questiotns.forEach((elem: any) => {
             let objectElem = elem.toObject()
+            let newquestion:{}={} ;
             if (lang == 'english') {
-                objectElem.questionForm = objectElem.eQuestionForm
-                objectElem.options = objectElem.eOptions
+                newquestion = {...objectElem ,questionForm : objectElem.eQuestionForm ,  options : objectElem.eOptions}
             }
             if (lang == 'arabic') {
-                objectElem.questionForm = objectElem.aQuestionForm
-                objectElem.options = objectElem.aOptions
+                newquestion = {...objectElem ,questionForm : objectElem.eQuestionForm ,  options : objectElem.eOptions}
             }
+            data.push(newquestion)
         })
-        return next(new response(req, res, 'open level', 200, null, { questions: questiotns }))
+        return next(new response(req, res, 'open level', 200, null, { questions: data }))
     }
 
 
