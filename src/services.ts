@@ -85,7 +85,6 @@ export default class contentService {
         let allLevels = [];
         for (let i = 0; i < all.length; i++) {
             const level = all[i].toObject()
-            console.log(level.lesson.paasedQuize)
             let newData;
             let mode : number;
             if (!level.lesson.seen.includes(id)){
