@@ -124,12 +124,22 @@ class contentController {
     openLevel(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             let userId = req.user.id;
+            let lang = req.params.lang;
             const level = yield level_1.default.findById(req.params.levelId);
-            if (level === null || level === void 0 ? void 0 : level.passedUsers.includes(userId)) {
-                const questiotns = yield questions_1.default.find({ level: level === null || level === void 0 ? void 0 : level._id }).limit(10);
-                return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: questiotns }));
-            }
-            const questiotns = yield questions_1.default.find({ $and: [{ level: level === null || level === void 0 ? void 0 : level._id }, { passedUser: { $ne: userId } }] }).limit(10);
+            // if (level?.passedUsers.includes(userId)) {
+            // }
+            const questiotns = yield questions_1.default.find({ level: level === null || level === void 0 ? void 0 : level._id }).limit(10);
+            questiotns.forEach((elem) => {
+                let objectElem = elem.toObject();
+                if (lang == 'english') {
+                    objectElem.questionForm = objectElem.eQuestionForm;
+                    objectElem.options = objectElem.eOptions;
+                }
+                if (lang == 'arabic') {
+                    objectElem.questionForm = objectElem.aQuestionForm;
+                    objectElem.options = objectElem.aOptions;
+                }
+            });
             return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: questiotns }));
         });
     }

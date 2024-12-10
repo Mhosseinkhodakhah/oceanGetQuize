@@ -72,8 +72,8 @@ export default class contentController {
     async getSubLesson(req: any, res: any, next: any) {
         const language = req.params.lang;
         let sublessonContent;
-        sublessonContent = await contentModel.findById( req.params.contentId)
-        if (!sublessonContent){
+        sublessonContent = await contentModel.findById(req.params.contentId)
+        if (!sublessonContent) {
             return next(new response(req, res, 'get specific subLesson', 400, 'this content is not exist', null))
         }
 
@@ -109,18 +109,18 @@ export default class contentController {
                 console.log('cache is not exist . . .')
                 const data = await services.readyLevelsData(userId)     // make the levels ready for this user
                 userLevels[userId] = data                                      // add new userLevels to cache data
-                await cacher.setter('getLevels' , userLevels)                    // cache heat the new data
-                levels = data                                                   
+                await cacher.setter('getLevels', userLevels)                    // cache heat the new data
+                levels = data
             } else {                                // this userLevels are exist on cache
                 console.log('cache is ready . . .')
-                levels = userLevels[userId]                 
+                levels = userLevels[userId]
             }
         } else {                                    // if cache was totaly empty
             console.log('cache is empty . .. .')
             const data = await services.readyLevelsData(userId)         // make this userlevels dat a for cache
             userLevels = {}                                         // make structure of cache data
             userLevels[userId] = data                           // add this userLevels to cachData
-            await cacher.setter('getLevels' , userLevels)
+            await cacher.setter('getLevels', userLevels)
             levels = data
         }
 
@@ -132,12 +132,23 @@ export default class contentController {
 
     async openLevel(req: any, res: any, next: any) {
         let userId = req.user.id;
+        let lang = req.params.lang
         const level = await levelModel.findById(req.params.levelId)
-        if (level?.passedUsers.includes(userId)) {
-            const questiotns = await questionModel.find({ level : level?._id }).limit(10)
-            return next(new response(req, res, 'open level', 200, null, { questions: questiotns }))
-        }
-        const questiotns = await questionModel.find({ $and: [{ level: level?._id }, { passedUser: { $ne: userId } }] }).limit(10)
+        // if (level?.passedUsers.includes(userId)) {
+
+        // }
+        const questiotns = await questionModel.find({ level: level?._id }).limit(10)
+        questiotns.forEach((elem: any) => {
+            let objectElem = elem.toObject()
+            if (lang == 'english') {
+                objectElem.questionForm = objectElem.eQuestionForm
+                objectElem.options = objectElem.eOptions
+            }
+            if (lang == 'arabic') {
+                objectElem.questionForm = objectElem.aQuestionForm
+                objectElem.options = objectElem.aOptions
+            }
+        })
         return next(new response(req, res, 'open level', 200, null, { questions: questiotns }))
     }
 
@@ -176,9 +187,9 @@ export default class contentController {
 
 
 
-    async getAllContent(req: any, res: any, next: any){
+    async getAllContent(req: any, res: any, next: any) {
         const contents = await contentModel.find()
-        return next (new response(req , res , 'get contents' , 200 , null , contents))
+        return next(new response(req, res, 'get contents', 200, null, contents))
     }
 
 
