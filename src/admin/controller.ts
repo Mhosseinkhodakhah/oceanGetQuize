@@ -4,7 +4,7 @@ import lessonModel from "../DB/models/lesson"
 import subLessonModel from "../DB/models/subLesson"
 import contentModel from "../DB/models/content"
 import levelModel from "../DB/models/level"
-import questionModel from "../DB/models/questions"
+import questionModel from "../DB/models/question"
 import internalCache from "../service/cach"
 import cacher from "../service/cach"
 
@@ -21,7 +21,7 @@ export default class adminController {
             finalData = cacheData;
         } else {
             console.log('cache is empty . . .')
-            finalData = await levelModel.find()
+            finalData = await questionModel.find({level : req.params.levelId})
             await cacher.setter('admin-getLevels', finalData)
         }
         return next(new response(req, res, 'get levels', 200, null, finalData))

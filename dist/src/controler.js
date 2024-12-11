@@ -17,7 +17,7 @@ const responseService_1 = require("./service/responseService");
 const lesson_1 = __importDefault(require("./DB/models/lesson"));
 const content_1 = __importDefault(require("./DB/models/content"));
 const level_1 = __importDefault(require("./DB/models/level"));
-const questions_1 = __importDefault(require("./DB/models/questions"));
+const question_1 = __importDefault(require("./DB/models/question"));
 const connection_1 = __importDefault(require("./interservice/connection"));
 const cach_1 = __importDefault(require("./service/cach"));
 const services = new services_1.default();
@@ -128,7 +128,7 @@ class contentController {
             const level = yield level_1.default.findById(req.params.levelId);
             // if (level?.passedUsers.includes(userId)) {
             // }
-            const questiotns = yield questions_1.default.find({ level: level === null || level === void 0 ? void 0 : level._id }).limit(10);
+            const questiotns = yield question_1.default.find({ $and: [{ level: level === null || level === void 0 ? void 0 : level._id }, { passedUser: { $ne: req.user.id } }] }).limit(10);
             let data = [];
             questiotns.forEach((elem) => {
                 let objectElem = elem.toObject();
@@ -149,12 +149,12 @@ class contentController {
         return __awaiter(this, void 0, void 0, function* () {
             const answers = req.body;
             let trueAnswers = 0;
-            const question = yield questions_1.default.findOne({ questionForm: answers[0].questionForm });
+            const question = yield question_1.default.findOne({ questionForm: answers[0].questionForm });
             for (let i = 0; i < answers.length; i++) {
                 let title = answers[i].questionForm;
                 if ((question === null || question === void 0 ? void 0 : question.options[question === null || question === void 0 ? void 0 : question.trueOption]) == answers[i].answer) {
                     trueAnswers++;
-                    yield questions_1.default.findOneAndUpdate({ questionForm: title }, { $push: { passedUser: req.user.id } });
+                    yield question_1.default.findOneAndUpdate({ questionForm: title }, { $push: { passedUser: req.user.id } });
                 }
             }
             if (trueAnswers == 10) {

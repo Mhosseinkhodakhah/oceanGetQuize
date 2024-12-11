@@ -9,5 +9,5 @@ const controller_1 = __importDefault(require("./controller"));
 const adminRouter = (0, express_1.Router)();
 const adminAuth = new middleware_1.default().adminAuth;
 const controller = new controller_1.default();
-adminRouter.get('/get-levels', adminAuth, controller.getLevels);
+adminRouter.get('/levels/questions/:levelId', adminAuth, controller.getLevels);
 exports.default = adminRouter;

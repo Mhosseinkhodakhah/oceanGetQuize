@@ -7,7 +7,7 @@ import subLessonModel from "./DB/models/subLesson";
 import { lessonDB } from "./interfaces";
 import contentModel from "./DB/models/content";
 import levelModel from "./DB/models/level";
-import questionModel from "./DB/models/questions";
+import questionModel from "./DB/models/question";
 import { level } from "winston";
 import interConnection from "./interservice/connection";
 import internalCache from "./service/cach";
@@ -137,7 +137,7 @@ export default class contentController {
         // if (level?.passedUsers.includes(userId)) {
 
         // }
-        const questiotns = await questionModel.find({ level: level?._id }).limit(10)
+        const questiotns = await questionModel.find({ $and:[ {level: level?._id} , {passedUser : {$ne : req.user.id}}] }).limit(10)
         let data :{}[] = []
         questiotns.forEach((elem: any) => {
             let objectElem = elem.toObject()
