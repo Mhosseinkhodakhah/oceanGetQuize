@@ -139,6 +139,9 @@ class contentController {
                 if (lang == 'arabic') {
                     newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
                 }
+                if (lang == 'persian') {
+                    newquestion = objectElem;
+                }
                 data.push(newquestion);
             });
             return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: data }));

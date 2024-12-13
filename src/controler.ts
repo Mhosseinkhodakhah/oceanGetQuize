@@ -141,12 +141,15 @@ export default class contentController {
         let data :{}[] = []
         questiotns.forEach((elem: any) => {
             let objectElem = elem.toObject()
-            let newquestion:{}={} ;
+            let newquestion:{} = {} ;
             if (lang == 'english') {
                 newquestion = {...objectElem ,questionForm : objectElem.eQuestionForm ,  options : objectElem.eOptions}
             }
             if (lang == 'arabic') {
                 newquestion = {...objectElem ,questionForm : objectElem.eQuestionForm ,  options : objectElem.eOptions}
+            }
+            if (lang == 'persian'){
+                newquestion = objectElem;
             }
             data.push(newquestion)
         })
