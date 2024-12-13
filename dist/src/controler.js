@@ -125,9 +125,11 @@ class contentController {
         return __awaiter(this, void 0, void 0, function* () {
             let cacheData = yield cach_1.default.getter(`openLevel-${req.params.levelId}-${req.params.lang}`);
             if (cacheData) {
+                console.log('read throw cache . . .');
                 return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: cacheData }));
             }
             else {
+                console.log('cache is empty . . .');
                 let userId = req.user.id;
                 let lang = req.params.lang;
                 const level = yield level_1.default.findById(req.params.levelId);

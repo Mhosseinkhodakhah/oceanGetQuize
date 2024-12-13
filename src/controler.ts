@@ -133,8 +133,10 @@ export default class contentController {
     async openLevel(req: any, res: any, next: any) {
         let cacheData = await cacher.getter(`openLevel-${req.params.levelId}-${req.params.lang}`)
         if (cacheData) {
+            console.log('read throw cache . . .')
             return next(new response(req, res, 'open level', 200, null, { questions: cacheData }))
         } else {
+            console.log('cache is empty . . .')
             let userId = req.user.id;
             let lang = req.params.lang;
             const level = await levelModel.findById(req.params.levelId)
