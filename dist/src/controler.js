@@ -123,28 +123,33 @@ class contentController {
     }
     openLevel(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let userId = req.user.id;
-            let lang = req.params.lang;
-            const level = yield level_1.default.findById(req.params.levelId);
-            // if (level?.passedUsers.includes(userId)) {
-            // }
-            const questiotns = yield question_1.default.find({ $and: [{ level: level === null || level === void 0 ? void 0 : level._id }, { passedUser: { $ne: req.user.id } }] }).limit(10);
-            let data = [];
-            questiotns.forEach((elem) => {
-                let objectElem = elem.toObject();
-                let newquestion = {};
-                if (lang == 'english') {
-                    newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
-                }
-                if (lang == 'arabic') {
-                    newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
-                }
-                if (lang == 'persian') {
-                    newquestion = objectElem;
-                }
-                data.push(newquestion);
-            });
-            return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: data }));
+            let cacheData = yield cach_1.default.getter(`openLevel-${req.params.levelId}-${req.params.lang}`);
+            if (cacheData) {
+                return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: cacheData }));
+            }
+            else {
+                let userId = req.user.id;
+                let lang = req.params.lang;
+                const level = yield level_1.default.findById(req.params.levelId);
+                const questiotns = yield question_1.default.find({ $and: [{ level: level === null || level === void 0 ? void 0 : level._id }, { passedUser: { $ne: req.user.id } }] }).limit(10);
+                let data = [];
+                questiotns.forEach((elem) => {
+                    let objectElem = elem.toObject();
+                    let newquestion = {};
+                    if (lang == 'english') {
+                        newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
+                    }
+                    if (lang == 'arabic') {
+                        newquestion = Object.assign(Object.assign({}, objectElem), { questionForm: objectElem.eQuestionForm, options: objectElem.eOptions });
+                    }
+                    if (lang == 'persian') {
+                        newquestion = objectElem;
+                    }
+                    data.push(newquestion);
+                });
+                yield cach_1.default.setter(`openLevel-${req.params.levelId}-${req.params.lang}`, data);
+                return next(new responseService_1.response(req, res, 'open level', 200, null, { questions: data }));
+            }
         });
     }
     //! needs to review

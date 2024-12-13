@@ -131,29 +131,32 @@ export default class contentController {
 
 
     async openLevel(req: any, res: any, next: any) {
-        let userId = req.user.id;
-        let lang = req.params.lang
-        const level = await levelModel.findById(req.params.levelId)
-        // if (level?.passedUsers.includes(userId)) {
-
-        // }
-        const questiotns = await questionModel.find({ $and:[ {level: level?._id} , {passedUser : {$ne : req.user.id}}] }).limit(10)
-        let data :{}[] = []
-        questiotns.forEach((elem: any) => {
-            let objectElem = elem.toObject()
-            let newquestion:{} = {} ;
-            if (lang == 'english') {
-                newquestion = {...objectElem ,questionForm : objectElem.eQuestionForm ,  options : objectElem.eOptions}
-            }
-            if (lang == 'arabic') {
-                newquestion = {...objectElem ,questionForm : objectElem.eQuestionForm ,  options : objectElem.eOptions}
-            }
-            if (lang == 'persian'){
-                newquestion = objectElem;
-            }
-            data.push(newquestion)
-        })
-        return next(new response(req, res, 'open level', 200, null, { questions: data }))
+        let cacheData = await cacher.getter(`openLevel-${req.params.levelId}-${req.params.lang}`)
+        if (cacheData) {
+            return next(new response(req, res, 'open level', 200, null, { questions: cacheData }))
+        } else {
+            let userId = req.user.id;
+            let lang = req.params.lang;
+            const level = await levelModel.findById(req.params.levelId)
+            const questiotns = await questionModel.find({ $and: [{ level: level?._id }, { passedUser: { $ne: req.user.id } }] }).limit(10)
+            let data: {}[] = []
+            questiotns.forEach((elem: any) => {
+                let objectElem = elem.toObject()
+                let newquestion: {} = {};
+                if (lang == 'english') {
+                    newquestion = { ...objectElem, questionForm: objectElem.eQuestionForm, options: objectElem.eOptions }
+                }
+                if (lang == 'arabic') {
+                    newquestion = { ...objectElem, questionForm: objectElem.eQuestionForm, options: objectElem.eOptions }
+                }
+                if (lang == 'persian') {
+                    newquestion = objectElem;
+                }
+                data.push(newquestion)
+            })
+            await cacher.setter(`openLevel-${req.params.levelId}-${req.params.lang}` , data)
+            return next(new response(req, res, 'open level', 200, null, { questions: data }))
+        }
     }
 
 
