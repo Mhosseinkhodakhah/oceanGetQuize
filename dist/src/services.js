@@ -86,7 +86,7 @@ class contentService {
      */
     readyLevelsData(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const all = yield level_1.default.find().populate('lesson');
+            const all = yield level_1.default.find().populate('lesson').sort({ number: 1 });
             let allLevels = [];
             for (let i = 0; i < all.length; i++) {
                 const level = all[i].toObject();

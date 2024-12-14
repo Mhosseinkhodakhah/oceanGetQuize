@@ -81,7 +81,7 @@ export default class contentService {
      * this mudule seprate data based on the languages for caching just sublessons data
      */
     async readyLevelsData(id: any) {
-        const all = await levelModel.find().populate('lesson')
+        const all = await levelModel.find().populate('lesson').sort({number : 1})
         let allLevels = [];
         for (let i = 0; i < all.length; i++) {
             const level = all[i].toObject()
