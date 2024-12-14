@@ -37,7 +37,8 @@ const contentSchema = new mongoose_1.Schema({
     ePictures: [String],
     aPictures: [String],
     seen: [String],
-    subLesson: { type: mongoose_1.default.Types.ObjectId, ref: 'subLessons' }
+    state: { type: Number },
+    subLesson: { type: mongoose_1.default.Types.ObjectId, ref: 'subLessons' },
 }, { timestamps: true });
 const contentModel = (0, mongoose_1.model)('contents', contentSchema);
 exports.default = contentModel;

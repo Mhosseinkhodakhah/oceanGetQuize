@@ -13,12 +13,12 @@ export interface lessonDB {
 
 
 export interface questionDB {
-    questionForm : string,
-    eQuestionForm : string,
-    aQuestionForm : string,
-    options : string[],
-    eOptions : string[],
-    aOptions : string[],
+    questionForm: string,
+    eQuestionForm: string,
+    aQuestionForm: string,
+    options: string[],
+    eOptions: string[],
+    aOptions: string[],
     trueOption: number,
     time: number,
     level: any,
@@ -44,12 +44,20 @@ export interface subLessonDB {
     lesson: any,
     content: {},
     seen: string[]
-    subLessons : {eName : string , number : number , _id : any , content : any}[]
+    subLessons: { eName: string , name : string , aName : string, number: number, _id: any , seen : string[], content: any }[]
 }
 
 
 export interface content {
-    internalContent: {},
+    internalContent: {
+        title: string,
+        aTitle: string,
+        eTitle: string,
+        describtion: string,
+        eDescribtion: string,
+        aDescribtion: string,
+    },
+    state : number
 
     pictures?: string[],
     ePictures?: string[],
