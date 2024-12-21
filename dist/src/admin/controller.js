@@ -33,7 +33,7 @@ class adminController {
                 finalData = yield question_1.default.find({ level: req.params.levelId });
                 level = yield level_1.default.findById(req.params.levelId);
                 console.log('final data', finalData);
-                yield cach_1.default.setter('admin-getLevels', { questions: finalData, level: level === null || level === void 0 ? void 0 : level.toObject() });
+                // await cacher.setter('admin-getLevels', {questions : finalData , level : level?.toObject() })
             }
             return next(new responseService_1.response(req, res, 'get levels', 200, null, { questions: finalData, level: level }));
         });

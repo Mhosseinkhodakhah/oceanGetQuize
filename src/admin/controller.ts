@@ -25,7 +25,7 @@ export default class adminController {
             finalData = await questionModel.find({level : req.params.levelId})
             level = await levelModel.findById(req.params.levelId)
             console.log('final data' , finalData)
-            await cacher.setter('admin-getLevels', {questions : finalData , level : level?.toObject() })
+            // await cacher.setter('admin-getLevels', {questions : finalData , level : level?.toObject() })
         }
         return next(new response(req, res, 'get levels', 200, null, {questions : finalData , level : level }))
     }
