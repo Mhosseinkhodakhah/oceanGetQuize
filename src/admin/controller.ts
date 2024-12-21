@@ -23,8 +23,8 @@ export default class adminController {
         } else {
             console.log('cache is empty . . .')
             finalData = await questionModel.find({level : req.params.levelId})
-            level =await levelModel.findById(req.params.levelId)
-            await cacher.setter('admin-getLevels', finalData)
+            level = await levelModel.findById(req.params.levelId)
+            await cacher.setter('admin-getLevels', {questions : finalData ,level : level })
         }
         return next(new response(req, res, 'get levels', 200, null, {questions : finalData ,level : level }))
     }

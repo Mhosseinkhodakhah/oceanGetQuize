@@ -32,7 +32,7 @@ class adminController {
                 console.log('cache is empty . . .');
                 finalData = yield question_1.default.find({ level: req.params.levelId });
                 level = yield level_1.default.findById(req.params.levelId);
-                yield cach_1.default.setter('admin-getLevels', finalData);
+                yield cach_1.default.setter('admin-getLevels', { questions: finalData, level: level });
             }
             return next(new responseService_1.response(req, res, 'get levels', 200, null, { questions: finalData, level: level }));
         });
