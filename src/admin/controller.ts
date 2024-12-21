@@ -16,15 +16,17 @@ export default class adminController {
     async getLevels(req: any, res: any, next: any) {
         let cacheData = await cacher.getter('admin-getLevels')
         let finalData;
+        let level;
         if (cacheData) {
             console.log('read throw cache . . .')
             finalData = cacheData;
         } else {
             console.log('cache is empty . . .')
             finalData = await questionModel.find({level : req.params.levelId})
+            level =await levelModel.findById(req.params.levelId)
             await cacher.setter('admin-getLevels', finalData)
         }
-        return next(new response(req, res, 'get levels', 200, null, finalData))
+        return next(new response(req, res, 'get levels', 200, null, {questions : finalData ,level : level }))
     }
 
 

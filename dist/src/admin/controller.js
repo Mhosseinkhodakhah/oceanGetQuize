@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const responseService_1 = require("../service/responseService");
 const lesson_1 = __importDefault(require("../DB/models/lesson"));
 const subLesson_1 = __importDefault(require("../DB/models/subLesson"));
+const level_1 = __importDefault(require("../DB/models/level"));
 const question_1 = __importDefault(require("../DB/models/question"));
 const cach_1 = __importDefault(require("../service/cach"));
 class adminController {
@@ -22,6 +23,7 @@ class adminController {
         return __awaiter(this, void 0, void 0, function* () {
             let cacheData = yield cach_1.default.getter('admin-getLevels');
             let finalData;
+            let level;
             if (cacheData) {
                 console.log('read throw cache . . .');
                 finalData = cacheData;
@@ -29,9 +31,10 @@ class adminController {
             else {
                 console.log('cache is empty . . .');
                 finalData = yield question_1.default.find({ level: req.params.levelId });
+                level = yield level_1.default.findById(req.params.levelId);
                 yield cach_1.default.setter('admin-getLevels', finalData);
             }
-            return next(new responseService_1.response(req, res, 'get levels', 200, null, finalData));
+            return next(new responseService_1.response(req, res, 'get levels', 200, null, { questions: finalData, level: level }));
         });
     }
     getSubLesson(req, res, next) {
