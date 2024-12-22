@@ -140,7 +140,8 @@ export default class contentController {
             let userId = req.user.id;
             let lang = req.params.lang;
             const level = await levelModel.findById(req.params.levelId)
-            const questiotns = await questionModel.find({level: level?._id }).limit(10)
+            // const questiotns = await questionModel.find({level: level?._id }).limit(10)
+            const questiotns = await questionModel.aggregate().sample(1)
             let data: {}[] = []
             questiotns.forEach((elem: any) => {
                 let objectElem = elem.toObject()
