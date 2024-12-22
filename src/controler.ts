@@ -131,11 +131,6 @@ export default class contentController {
 
 
     async openLevel(req: any, res: any, next: any) {
-        let cacheData = await cacher.getter(`openLevel-${req.params.levelId}-${req.params.lang}`)
-        if (cacheData) {
-            console.log('read throw cache . . .')
-            return next(new response(req, res, 'open level', 200, null, { questions: cacheData }))
-        } else {
             console.log('cache is empty . . .')
             let userId = req.user.id;
             let lang = req.params.lang;
@@ -150,16 +145,14 @@ export default class contentController {
                     newquestion = { ...objectElem, questionForm: objectElem.eQuestionForm, options: objectElem.eOptions }
                 }
                 if (lang == 'arabic') {
-                    newquestion = { ...objectElem, questionForm: objectElem.eQuestionForm, options: objectElem.eOptions }
+                    newquestion = { ...objectElem, questionForm: objectElem.aQuestionForm, options: objectElem.aOptions }
                 }
                 if (lang == 'persian') {
-                    newquestion = objectElem;
+                    newquestion = {...objectElem};
                 }
                 data.push(newquestion)
             })
-            await cacher.setter(`openLevel-${req.params.levelId}-${req.params.lang}` , data)
             return next(new response(req, res, 'open level', 200, null, { questions: data }))
-        }
     }
 
 
