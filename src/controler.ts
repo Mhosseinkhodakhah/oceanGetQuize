@@ -140,7 +140,7 @@ export default class contentController {
             let userId = req.user.id;
             let lang = req.params.lang;
             const level = await levelModel.findById(req.params.levelId)
-            const questiotns = await questionModel.find({ $and: [{ level: level?._id }, { passedUser: { $ne: req.user.id } }] }).limit(10)
+            const questiotns = await questionModel.find({ $and: [{ level: level?._id }] }).limit(10)
             let data: {}[] = []
             questiotns.forEach((elem: any) => {
                 let objectElem = elem.toObject()
