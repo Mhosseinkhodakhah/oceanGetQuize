@@ -12,6 +12,7 @@ import { level } from "winston";
 import interConnection from "./interservice/connection";
 import internalCache from "./service/cach";
 import cacher from "./service/cach";
+import messages from "./service/responseMessages";
 
 
 const services = new contentService()
@@ -131,9 +132,10 @@ export default class contentController {
 
 
     async openLevel(req: any, res: any, next: any) {
+        let userId = req.user.id;
+        let lang = req.params.lang;
+            try {
             console.log('cache is empty . . .')
-            let userId = req.user.id;
-            let lang = req.params.lang;
             const level = await levelModel.findById(req.params.levelId)
             // const questiotns = await questionModel.find({level: level?._id }).limit(10)
             const questiotns = await questionModel.aggregate().sample(1)
@@ -153,6 +155,11 @@ export default class contentController {
                 data.push(newquestion)
             })
             return next(new response(req, res, 'open level', 200, null, { questions: data }))
+            } catch (error) {
+                console.log(`error occured in open level ${error}`)
+                let internalError = messages[lang].unknownError
+                return next(new response(req, res, 'open level', 500 , internalError , null))
+            }
     }
 
 
