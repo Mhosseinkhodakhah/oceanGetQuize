@@ -84,6 +84,7 @@ process.on('unhandledException', (error) => {
 
 
 
+
 app.use(express.json({ limit: "25mb" }));
 
 
@@ -92,6 +93,11 @@ const port = process.env.PORT || 5001;
 app.listen(port , ()=>{
     console.log('quize get server is running successfully . . .')
 })
+app.use((err : any, req:any, res:any, next:any) => {
+    console.error(err.stack);
+    res.status(500).json(
+        { message: 'الله اکبر . . .' });
+});
 
 app.use('/app' , router)
 
