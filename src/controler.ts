@@ -141,6 +141,9 @@ export default class contentController {
             const allQuestiotns = await questionModel.find()
             let randomIndex = Math.floor(Math.random()*10)
             let lastIndex = randomIndex + 10
+            console.log('first' , randomIndex)
+            console.log('second' , randomIndex)
+
             let questiotns = allQuestiotns.splice(randomIndex , lastIndex)
             console.log(questiotns.length)
             let data: {}[] = []
