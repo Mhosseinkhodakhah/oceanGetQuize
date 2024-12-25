@@ -134,11 +134,14 @@ export default class contentController {
     async openLevel(req: any, res: any, next: any) {
         let userId = req.user.id;
         let lang = req.params.lang;
-            try {
+        try {
             console.log('cache is empty . . .')
             const level = await levelModel.findById(req.params.levelId)
             // const questiotns = await questionModel.find({level: level?._id }).limit(10)
-            const questiotns = await questionModel.aggregate().sample(1)
+            const allQuestiotns = await questionModel.find()
+            let randomIndex = Math.floor(Math.random()*10)
+            let lastIndex = randomIndex + 10
+            let questiotns = allQuestiotns.splice(randomIndex , lastIndex)
             let data: {}[] = []
             questiotns.forEach((elem: any) => {
                 let objectElem = elem.toObject()
@@ -150,48 +153,15 @@ export default class contentController {
                     newquestion = { ...objectElem, questionForm: objectElem.aQuestionForm, options: objectElem.aOptions }
                 }
                 if (lang == 'persian') {
-                    newquestion = {...objectElem};
+                    newquestion = { ...objectElem };
                 }
                 data.push(newquestion)
             })
             return next(new response(req, res, 'open level', 200, null, { questions: data }))
-            } catch (error) {
-                console.log(`error occured in open level ${error}`)
-                let internalError = messages[lang].unknownError
-                return next(new response(req, res, 'open level', 500 , internalError , null))
-            }
-    }
-
-
-
-
-    //! needs to review
-    async answer(req: any, res: any, next: any) {
-        const answers = req.body
-        let trueAnswers: number = 0;
-        const question = await questionModel.findOne({ questionForm: answers[0].questionForm })
-        for (let i = 0; i < answers.length; i++) {
-            let title = answers[i].questionForm;
-            if (question?.options[question?.trueOption] == answers[i].answer) {
-                trueAnswers++;
-                await questionModel.findOneAndUpdate({ questionForm: title }, { $push: { passedUser: req.user.id } })
-            }
-        }
-        if (trueAnswers == 10) {
-            const level = await levelModel.findByIdAndUpdate(question?.level, { $push: { passedUsers: req.user.id } })
-            const rewarded = await connection.putReward(req.user.id, level?.reward, `passed ${level?.number} level`)
-            if (rewarded.success) {
-                await levelModel.findByIdAndUpdate(level?._id, { rewarded: true })
-            }
-            const lessonLevels = await lessonModel.findById(level?.lesson).populate('levels').select('levels')
-            for (let j = 0; j < lessonLevels?.levels.length; j++) {
-                if (lessonLevels?.levels[j].passedUser.includes(req.user.id)) {
-                    await lessonModel.findByIdAndUpdate(level?.lesson, { $push: { paasedQuize: req.user.id } })
-                    return next(new response(req, res, 'answer questions', 200, null, { message: 'congratulation! you passed this quize' }))
-                }
-            }
-        } else {
-            return next(new response(req, res, 'answer questions', 200, null, { message: 'sorry! you cant pass this level! please review the lesson and try again' }))
+        } catch (error) {
+            console.log(`error occured in open level ${error}`)
+            let internalError = messages[lang].unknownError
+            return next(new response(req, res, 'open level', 500, internalError, null))
         }
     }
 

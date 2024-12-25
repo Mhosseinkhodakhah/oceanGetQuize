@@ -15,6 +15,8 @@ import connection from './src/DB/connection'
 import router from './src/router'
 import interservice from './src/interservice/router'
 import adminRouter from './src/admin/router'
+import messages from './src/service/responseMessages'
+import { response } from './src/service/responseService'
 const { combine, timestamp, label, prettyPrint } = format;
 
 dotenv.config({path : './config/config.env'})
@@ -93,11 +95,19 @@ const port = process.env.PORT || 5001;
 app.listen(port , ()=>{
     console.log('quize get server is running successfully . . .')
 })
+
+
 app.use((err : any, req:any, res:any, next:any) => {
-    console.error(err.stack);
+    console.error(err);
+    // let Error = (req.query.lang && req.query.lang!='') ? messages[req.query.lang].unknownError
     res.status(500).json(
-        { message: 'الله اکبر . . .' });
+        { success : false,
+            data : null,
+            scope : 'oceanGetQuize',
+            error : 'someThings went wrong . . .please try again'
+         })
 });
+
 
 app.use('/app' , router)
 
