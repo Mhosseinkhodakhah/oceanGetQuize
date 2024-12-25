@@ -142,7 +142,7 @@ export default class contentController {
             let randomIndex = Math.floor(Math.random()*10)
             let lastIndex = randomIndex + 10
             console.log('first' , randomIndex)
-            console.log('second' , randomIndex)
+            console.log('second' , lastIndex)
 
             let questiotns = allQuestiotns.splice(randomIndex , lastIndex)
             console.log(questiotns.length)
